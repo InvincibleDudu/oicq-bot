@@ -3,5 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "author": "InvincibleDudu <invdu@qq.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "oicq": "^2.3.1"
+  }
 }
