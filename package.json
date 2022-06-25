@@ -1,0 +1,7 @@
+{
+  "name": "bunny-node",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "InvincibleDudu <invdu@qq.com>",
+  "license": "MIT"
+}
