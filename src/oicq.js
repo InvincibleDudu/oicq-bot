@@ -20,18 +20,17 @@ client.on("message", e => {
    const msg = e.raw_message
    if (e.group_id === 208557053) {
       // group.sendMsg(e.user_id + ' said: ' + e.raw_message)
-      if (msg === '抽奖') {
-         const duration = Math.random() * 100 / 2
+      if (msg === '抽奖' || msg === '抽大奖') {
+         const duration = msg === '抽大奖' ? Math.random() * 1000 / 2 : Math.random() * 100 / 2
          group.muteMember(e.user_id, duration)
          group.sendMsg('恭喜您抽中' + duration.toFixed(0) + '秒')
       }
    }
-   if (e.atme) {
-      if (msg.includes('来点团语')) {
-         const list = ['伐桑班？', '切饱了', '伐困高？', '来侬则文', '钢铝？', '组忙', '老早晓得了']
-         client.pickGroup(e.group_id).sendMsg(list.random())
-         return
-      }
+   if (msg.includes('来点团语')) {
+      const list = ['伐桑班？', '切饱了', '伐困高？', '来侬则文', '钢铝？', '组忙', '老早晓得了', '你不看小分队的吗']
+      client.pickGroup(e.group_id).sendMsg(list.random())
+      // return
+   } else if (e.atme) {
       const m = msg.replace('@UnrealDudu', '').replace('@PS UnrealDudu', '').replace('吗？', '！').replace('吗', '').replace('？', '！').replace('?', '!')
       client.pickGroup(e.group_id).sendMsg(m)
    }
