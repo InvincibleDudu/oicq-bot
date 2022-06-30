@@ -6,6 +6,7 @@ const { createClient } = require('oicq')
 const account = 1015850524
 const client = createClient(account)
 const group = client.pickGroup(208557053)
+const fpsquad = client.pickGroup(700673635)
 
 const noAt = {
    type: 'image',
@@ -14,17 +15,54 @@ const noAt = {
    asface: false
 }
 
+const noAtInvdu = {
+   type: 'image',
+   file: '473a6586f4cf97d1433688004f89f1f762280-800-800.png',
+   url: 'https://c2cpicdw.qpic.cn/offpic_new/409174690//409174690-38497509-473A6586F4CF97D1433688004F89F1F7/0?term=2',
+   asface: false
+}
+
+const noAtSheep = {
+   type: 'image',
+   file: '2ef031a67b5aa7b5c6fc06c452e40f2f38293-600-600.png',
+   url: 'https://c2cpicdw.qpic.cn/offpic_new/409174690//409174690-2100346420-2EF031A67B5AA7B5C6FC06C452E40F2F/0?term=2',
+   asface: false
+}
+
+const duck = {
+   type: 'image',
+   file: 'd639d87ddb894defda8b03e82c16a2f82614119-230-230.gif',
+   url: 'https://c2cpicdw.qpic.cn/offpic_new/409174690//409174690-640228012-D639D87DDB894DEFDA8B03E82C16A2F8/0?term=2',
+   asface: false
+}
+
+let duckSent = false
+
 Array.prototype.random = function () {
    return this[Math.floor((Math.random() * this.length))]
 }
 
+let time = 0
+
 client.on('system.online', () => {
+   setInterval(() => {
+      time += 5
+      process.stdout.write(time + ' ')
+      if (time >= 2000 && !duckSent) {
+         fpsquad.sendMsg(duck)
+         duckSent = true
+         time = 0
+      }
+   }, 5000)
    console.log('Logged in!')
 })
 
 client.on('message', e => {
    console.log(e)
+   time = 0
+   duckSent = false
    const msg = e.raw_message
+   const atQQList = e.message.filter(item => item.type === 'at').map(item => item.qq)
    if (e.group_id === 208557053) {
       // group.sendMsg(e.user_id + ' said: ' + e.raw_message)
       if (msg === '抽奖' || msg === '抽大奖') {
@@ -48,16 +86,18 @@ client.on('message', e => {
       client.pickGroup(e.group_id).sendMsg(msgToSend)
       // return
    } else if (e.atme) {
-      let m = msg.replace('@UnrealDudu', '').replace('@PS UnrealDudu', '').replace('吗？', '！').replace('吗', '').replace('？', '').replace('?', '')
+      let m = msg.replace('@UnrealDudu', '').replace('@PS UnrealDudu', '').replace('吗？', '').replace('吗', '').replace('？', '').replace('?', '').replace('你', '我')
       if (m.trim() === '') {
          m = noAt
          client.pickGroup(e.group_id).sendMsg(m)
          return
       }
-      m+= '！'
+      m += '！'
       client.pickGroup(e.group_id).sendMsg(m)
-   } else if (msg.includes('@InvincibleDudu') || msg.includes('@PS InvincibleDudu')) {
-      client.pickGroup(e.group_id).sendMsg(noAt)
+   } else if (atQQList.includes(409174690)) {
+      client.pickGroup(e.group_id).sendMsg(noAtInvdu)
+   } else if (atQQList.includes(791876772)) {
+      client.pickGroup(e.group_id).sendMsg(noAtSheep)
    }
 
 //    e.reply("hello world", true) //true表示引用对方的消息
