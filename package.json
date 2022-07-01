@@ -5,7 +5,7 @@
   "author": "InvincibleDudu <invdu@qq.com>",
   "license": "MIT",
   "scripts": {
-    "start": "npx tsc src/oicq-ts.ts && node src/oicq-ts.js"
+    "start": "npx tsc src/oicq.ts && node src/oicq.js"
   },
   "dependencies": {
     "oicq": "^2.3.1"
