@@ -1,7 +1,7 @@
 /**
  * Created by InvincibleDudu on 6/25/2022 at 15:41
  */
-import { GroupMessage, ImageElem, PrivateMessage, Sendable } from "oicq";
+import {GroupMessage, ImageElem, MessageElem, PrivateMessage, Sendable} from "oicq"
 
 const { createClient } = require('oicq')
 const account = 1015850524
@@ -45,10 +45,13 @@ let duckSent = false
 
 let time = 0
 
+let pendingRps = false
+
 client.on('system.online', () => {
    setInterval(() => {
       time += 1
       process.stdout.write(time + 's\r')
+      if (time > 60 && pendingRps) pendingRps = false
       if (time >= 2000 && !duckSent) {
          fpsquad.sendMsg(duck)
          duckSent = true
@@ -57,6 +60,7 @@ client.on('system.online', () => {
    }, 1000)
    console.log('Logged in!')
 })
+let lastMessage: MessageElem[] = []
 
 client.on('message', (e: GroupMessage | PrivateMessage) => {
    if (e instanceof PrivateMessage) return
@@ -102,8 +106,22 @@ client.on('message', (e: GroupMessage | PrivateMessage) => {
       client.pickGroup(e.group_id).sendMsg(noAtInvdu)
    } else if (atQQList.includes(791876772)) {
       client.pickGroup(e.group_id).sendMsg(noAtSheep)
+   } else if (JSON.stringify(e.message) === JSON.stringify(lastMessage)) {
+      client.pickGroup(e.group_id).sendMsg(e.message)
+   } else if (msg === '猜拳' || msg === '来猜拳') {
+      client.pickGroup(e.group_id).sendMsg('你先出')
+      pendingRps = true
+   } else if (pendingRps && e.message[0].type === 'rps') {
+      const id = e.message[0].id
+      let counter = 3
+      if (id === 3 || id === 2) counter = id - 1
+      client.pickGroup(e.group_id).sendMsg({ type: 'rps', id: counter })
+      setTimeout(() => {
+         client.pickGroup(e.group_id).sendMsg('🖍')
+         pendingRps = false
+      }, 1500)
    }
-
+   lastMessage = e.message
 //    e.reply("hello world", true) //true表示引用对方的消息
 })
 
