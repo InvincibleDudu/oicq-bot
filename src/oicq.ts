@@ -108,6 +108,7 @@ client.on('message', (e: GroupMessage | PrivateMessage) => {
       client.pickGroup(e.group_id).sendMsg(noAtSheep)
    } else if (JSON.stringify(e.message) === JSON.stringify(lastMessage)) {
       client.pickGroup(e.group_id).sendMsg(e.message)
+      lastMessage = []
    } else if (msg === '猜拳' || msg === '来猜拳') {
       client.pickGroup(e.group_id).sendMsg('你先出')
       pendingRps = true
@@ -120,6 +121,8 @@ client.on('message', (e: GroupMessage | PrivateMessage) => {
          client.pickGroup(e.group_id).sendMsg('🖍')
          pendingRps = false
       }, 1500)
+   } else {
+      lastMessage = e.message
    }
    lastMessage = e.message
 //    e.reply("hello world", true) //true表示引用对方的消息
