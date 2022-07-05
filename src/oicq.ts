@@ -18,9 +18,8 @@ const noAt: ImageElem = {
 
 const noAtInvdu: ImageElem = {
    type: 'image',
-   file: '473a6586f4cf97d1433688004f89f1f762280-800-800.png',
-   url: 'https://c2cpicdw.qpic.cn/offpic_new/409174690//409174690-38497509-473A6586F4CF97D1433688004F89F1F7/0?term=2',
-   asface: false
+   file: 'a1f33e0aaea14321c7730e9646fe1ed88584-200-200.png',
+   url: 'https://c2cpicdw.qpic.cn/offpic_new/409174690//409174690-1841711683-A1F33E0AAEA14321C7730E9646FE1ED8/0?term=2',
 }
 
 const noAtSheep: ImageElem = {
@@ -110,9 +109,9 @@ client.on('message', (e: GroupMessage | PrivateMessage) => {
       }
       m += '！'
       client.pickGroup(e.group_id).sendMsg(m)
-   } else if (atQQList.includes(409174690)) {
+   } else if (atQQList.includes(409174690) && !hasMsgOtherThanAt(e.message)) {
       client.pickGroup(e.group_id).sendMsg(noAtInvdu)
-   } else if (atQQList.includes(791876772)) {
+   } else if (atQQList.includes(791876772) && !hasMsgOtherThanAt(e.message)) {
       client.pickGroup(e.group_id).sendMsg(noAtSheep)
    } else if (JSON.stringify(e.message) === JSON.stringify(lastMessage)) {
       client.pickGroup(e.group_id).sendMsg(e.message)
@@ -150,3 +149,13 @@ client.on('system.login.qrcode', function () {
    })
 }).login()
 // group.sendMsg('hello world')
+
+function hasMsgOtherThanAt(msg: MessageElem[]) {
+   for (const item of msg) {
+      if (item.type !== 'at') {
+         if (item.type === 'text' && !item.text.trim()) continue
+         return true
+      }
+   }
+   return false
+}
