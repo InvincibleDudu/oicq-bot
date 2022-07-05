@@ -46,6 +46,7 @@ let duckSent = false
 let time = 0
 
 let pendingRps = false
+let rpsSender = 0
 
 client.on('system.online', () => {
    setInterval(() => {
@@ -112,19 +113,25 @@ client.on('message', (e: GroupMessage | PrivateMessage) => {
    } else if (msg === '猜拳' || msg === '来猜拳') {
       client.pickGroup(e.group_id).sendMsg('你先出')
       pendingRps = true
+      rpsSender = e.sender.user_id
    } else if (pendingRps && e.message[0].type === 'rps') {
       const id = e.message[0].id
       let counter = 3
       if (id === 3 || id === 2) counter = id - 1
+      if (rpsSender === 409174690) {
+         if (id === 2 || id === 1) counter = id + 1
+         else counter = 1
+      }
       client.pickGroup(e.group_id).sendMsg({ type: 'rps', id: counter })
       setTimeout(() => {
-         client.pickGroup(e.group_id).sendMsg('🖍')
+         if (rpsSender === 409174690) client.pickGroup(e.group_id).sendMsg(clap)
+         else client.pickGroup(e.group_id).sendMsg('🖍')
          pendingRps = false
+         rpsSender = 0
       }, 1500)
    } else {
       lastMessage = e.message
    }
-   lastMessage = e.message
 //    e.reply("hello world", true) //true表示引用对方的消息
 })
 
