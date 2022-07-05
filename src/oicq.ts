@@ -37,6 +37,13 @@ const duck: ImageElem = {
    asface: false
 }
 
+const clap: ImageElem = {
+   type: 'image',
+   file: '4a3a00bf8310fd614ad224d4ccd05bd2168981-200-200.gif',
+   url: 'https://c2cpicdw.qpic.cn/offpic_new/409174690//409174690-456973224-4A3A00BF8310FD614AD224D4CCD05BD2/0?term=2',
+   asface: false
+}
+
 let duckSent = false
 
 // Array.prototype.random = function () {
