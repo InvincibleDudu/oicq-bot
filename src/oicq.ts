@@ -58,9 +58,9 @@ client.on('message', (e: GroupMessage | PrivateMessage) => {
       }
    }
    if (msg.includes('来点团语')) {
-      const list = ['伐桑班？', '切饱了', '伐困高？', '来侬则文', '钢铝？', '组忙', '老早晓得了', '你不看小分队的吗', '这个话题不要再聊了', 'oh?', '警告', '再发禁言到明年额', '草票特度？']
+      const list = ['伐桑班？', '切饱了', '伐困高？', '来侬则文', '钢铝？', '组忙', '老早晓得了', '你不看小分队的吗', '这个话题不要再聊了', 'oh?', 'warning', '再发禁言到明年额', '草票特度？', 'noLook']
       let msgToSend: Sendable = list[Math.floor((Math.random() * list.length))]
-      if (msgToSend === '警告') msgToSend = images.warning
+      if (msgToSend === 'warning' || msgToSend === 'noLook') msgToSend = images[msgToSend]
       client.pickGroup(e.group_id).sendMsg(msgToSend)
       // return
    } else if (e.atme) {
