@@ -73,7 +73,7 @@ client.on('message', (e: GroupMessage | PrivateMessage) => {
       client.pickGroup(e.group_id).sendMsg(images.noAtInvdu)
    } else if (atQQList.includes(791876772) && !hasMsgOtherThanAt(e.message)) {
       client.pickGroup(e.group_id).sendMsg(images.noAtSheep)
-   } else if (JSON.stringify(e.message) === JSON.stringify(lastMessage)) {
+   } else if (JSON.stringify(e.message) === JSON.stringify(lastMessage) || compareImage(e.message[0], lastMessage[0])) {
       client.pickGroup(e.group_id).sendMsg(e.message)
       lastMessage = []
    } else if (msg === '猜拳' || msg === '来猜拳') {
@@ -118,4 +118,9 @@ function hasMsgOtherThanAt(msg: MessageElem[]) {
       }
    }
    return false
+}
+
+function compareImage(img1: MessageElem, img2: MessageElem) {
+   if (img1.type !== 'image' || img2.type !== 'image') return false
+   return img1.file === img2.file
 }
