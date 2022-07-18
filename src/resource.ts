@@ -1,4 +1,4 @@
-import { ImageElem } from 'oicq'
+import {ImageElem} from 'oicq'
 
 interface ImageElemObj {
    [name: string]: ImageElem
@@ -35,4 +35,14 @@ export const images: ImageElemObj = {
       file: '4a3a00bf8310fd614ad224d4ccd05bd2168981-200-200.gif',
       url: 'https://c2cpicdw.qpic.cn/offpic_new/409174690//409174690-456973224-4A3A00BF8310FD614AD224D4CCD05BD2/0?term=2',
    },
+   noLook: {
+      type: 'image',
+      file: 'd8a2d5020cb868a9de2d316c9fd7d38813189-289-416.jpg',
+      url: 'https://gchat.qpic.cn/gchatpic_new/409174690/2198557053-3130491870-D8A2D5020CB868A9DE2D316C9FD7D388/0?term=2',
+   },
+   dumb: {
+      type: 'image',
+      file: 'a3404e8cab8a1fe20c2af3a1bdf9fce4747-71-59.jpg',
+      url: 'https://c2cpicdw.qpic.cn/offpic_new/409174690//409174690-3708393924-A3404E8CAB8A1FE20C2AF3A1BDF9FCE4/0?term=2',
+   }
 }

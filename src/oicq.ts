@@ -3,18 +3,16 @@
  */
 import { GroupMessage, ImageElem, MessageElem, PrivateMessage, Sendable } from 'oicq'
 import { images } from "./resource"
+import { countDays } from "./util"
 
 const { createClient } = require('oicq')
+const schedule = require('node-schedule')
 const account = 1015850524
 const client = createClient(account)
 const group = client.pickGroup(208557053)
 const fpsquad = client.pickGroup(700673635)
 
 let duckSent = false
-
-// Array.prototype.random = function () {
-//    return this[Math.floor((Math.random() * this.length))]
-// }
 
 let time = 0
 
@@ -32,6 +30,13 @@ client.on('system.online', () => {
          time = 0
       }
    }, 1000)
+   schedule.scheduleJob({ hour: 3, minute: 30, second: 5 }, function() {
+      fpsquad.sendMsg('今天距fps小分队停更已过去' + countDays(new Date('02/28/2021')) + '天')
+   })
+   schedule.scheduleJob({ minute: 5, second: 5 }, function() {
+      if (duckSent) return
+      fpsquad.sendMsg(images.dumb)
+   })
    console.log('Logged in!')
 })
 let lastMessage: MessageElem[] = []
