@@ -3,14 +3,28 @@
  */
 import { AtElem, GroupMessage, ImageElem, MessageElem, PrivateMessage, Sendable } from 'oicq'
 import { images } from "./resource"
-import { countDays } from "./util"
+import { countDays, getReadableTime } from "./util"
 
 const { createClient } = require('oicq')
 const schedule = require('node-schedule')
 const account = 1015850524
 const client = createClient(account)
 const group = client.pickGroup(208557053)
+const testGroup = client.pickGroup(748520034)
 const fpsquad = client.pickGroup(700673635)
+
+const fs = require('fs')
+const util = require('util')
+
+const log_file = fs.createWriteStream(__dirname + '/' + getReadableTime() + '.log', { flags : 'w' })
+const log_stdout = process.stdout
+
+console.log = function(...args) {
+   const output = args.join(' ')
+   log_file.write(util.format(output) + '\r\n')
+   log_stdout.write(util.format(output) + '\r\n')
+   console.info(...args)
+}
 
 let duckSent = false
 let lastRepeated: MessageElem[] = []
