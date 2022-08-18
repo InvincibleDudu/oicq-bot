@@ -1,7 +1,7 @@
 /**
  * Created by InvincibleDudu on 6/25/2022 at 15:41
  */
-import { GroupMessage, ImageElem, MessageElem, PrivateMessage, Sendable } from 'oicq'
+import { AtElem, GroupMessage, ImageElem, MessageElem, PrivateMessage, Sendable } from 'oicq'
 import { images } from "./resource"
 import { countDays } from "./util"
 
@@ -13,8 +13,10 @@ const group = client.pickGroup(208557053)
 const fpsquad = client.pickGroup(700673635)
 
 let duckSent = false
+let lastRepeated: MessageElem[] = []
 
 let time = 0
+let cd = 0
 
 let pendingRps = false
 let rpsSender = 0
@@ -22,6 +24,7 @@ let rpsSender = 0
 client.on('system.online', () => {
    setInterval(() => {
       time += 1
+      cd += 1
       process.stdout.write(time + 's\r')
       if (time > 60 && pendingRps) pendingRps = false
       if (time >= 2000 && !duckSent) {
@@ -35,18 +38,19 @@ client.on('system.online', () => {
    })
    schedule.scheduleJob({ minute: 5, second: 5 }, function() {
       if (duckSent) return
-      fpsquad.sendMsg(images.dumb)
+      if (Math.random() < 0.5) fpsquad.sendMsg(images.dumb)
    })
    console.log('Logged in!')
 })
 let lastMessage: MessageElem[] = []
 
 client.on('message', (e: GroupMessage | PrivateMessage) => {
+   console.log(e)
    if (e instanceof PrivateMessage) return
-   console.log(e.sender.card + ' said: ' + e.raw_message + 'after ' + time + 's')
+   // console.log(e.sender.card + ' said: ' + e.raw_message + 'after ' + time + 's')
    time = 0
    duckSent = false
-   const msg: string = e.raw_message
+   const msg = e.raw_message
    const atQQList: number[] = e.message.filter((item: any) => item.type === 'at').map((item: any) => item.qq)
    if (e.group_id === 208557053) {
       // group.sendMsg(e.user_id + ' said: ' + e.raw_message)
@@ -64,22 +68,33 @@ client.on('message', (e: GroupMessage | PrivateMessage) => {
       client.pickGroup(e.group_id).sendMsg(msgToSend)
       // return
    } else if (e.atme) {
-      let m: ImageElem | string = msg.replace('@UnrealDudu', '').replace('@PS UnrealDudu', '').replace('吗？', '').replace('吗', '').replace('？', '').replace('?', '').replace('你', '我')
+      let m: ImageElem | string = msg.replace('@UnrealDudu', '').replace('@PS UnrealDudu', '').replace('吗？', '').replace('吗', '').replace('？', '').replace('?', '').replace('你', '我').replace('@InvincibleDudu', '').replace('@PS InvincibleDudu🍭', '')
       if (m.trim() === '') {
-         m = images.noAt
-         // const sender = e.sender
          // const info = sender.age + '岁的' + sender.area + sender.sex + '人' + sender.nickname
-         client.pickGroup(e.group_id).sendMsg(m)
+         client.pickGroup(e.group_id).sendMsg(images.catThreaten)
+         if (cd < 15) return
+         const reAtMsg: AtElem = { type: 'at', qq: e.sender.user_id }
+         client.pickGroup(e.group_id).sendMsg(reAtMsg)
+         cd = 0
          return
       }
       m += '！'
       client.pickGroup(e.group_id).sendMsg(m)
    } else if (atQQList.includes(409174690) && !hasMsgOtherThanAt(e.message)) {
-      client.pickGroup(e.group_id).sendMsg(images.noAtInvdu)
+      // client.pickGroup(e.group_id).sendMsg(images.noAtInvdu)
+      client.pickGroup(e.group_id).sendMsg(images.catThreaten)
+      if (cd < 15) return
+      const reAtMsg: AtElem = { type: 'at', qq: e.sender.user_id }
+      client.pickGroup(e.group_id).sendMsg(reAtMsg)
+      // client.pickGroup(e.group_id).sendMsg(reAtMsg)
+      // client.pickGroup(e.group_id).sendMsg(reAtMsg)
+      cd = 0
    } else if (atQQList.includes(791876772) && !hasMsgOtherThanAt(e.message)) {
       client.pickGroup(e.group_id).sendMsg(images.noAtSheep)
    } else if (JSON.stringify(e.message) === JSON.stringify(lastMessage) || compareImage(e.message[0], lastMessage[0])) {
+      if (lastRepeated === e.message) return
       client.pickGroup(e.group_id).sendMsg(e.message)
+      lastRepeated = e.message
       lastMessage = []
    } else if (msg === '猜拳' || msg === '来猜拳') {
       client.pickGroup(e.group_id).sendMsg('你先出')
@@ -100,6 +115,8 @@ client.on('message', (e: GroupMessage | PrivateMessage) => {
          pendingRps = false
          rpsSender = 0
       }, 1500)
+   // } else if (Math.random() < 0.05) {
+   //    e.reply // todo
    } else {
       lastMessage = e.message
    }

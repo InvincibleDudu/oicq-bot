@@ -44,5 +44,17 @@ export const images: ImageElemObj = {
       type: 'image',
       file: 'a3404e8cab8a1fe20c2af3a1bdf9fce4747-71-59.jpg',
       url: 'https://c2cpicdw.qpic.cn/offpic_new/409174690//409174690-3708393924-A3404E8CAB8A1FE20C2AF3A1BDF9FCE4/0?term=2',
+   },
+   nbcs: {
+      type: 'image',
+      file: '17ce38ff3525e6c70d6583a42ad34c34922300-480-255.gif',
+   },
+   fightMe: {
+      type: 'image',
+      file: '7ccdb9ae74ce101f1966aac149df3014108585-240-240.png',
+   },
+   catThreaten: {
+      type: 'image',
+      file: 'd6c83b7973ed9001aba6e67dd375d632186709-1080-1439.jpg'
    }
 }
