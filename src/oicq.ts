@@ -57,7 +57,7 @@ client.on('system.online', () => {
    })
    const rule: RecurrenceRule = new schedule.RecurrenceRule()
    rule.hour = [11, 17, 23]
-   rule.minute = Math.random() * 60
+   rule.minute = (Math.random() * 59).toFixed(0)
    schedule.scheduleJob(rule, function() {
       if (duckSent) return
       fpsquad.sendMsg(images.hungry)
