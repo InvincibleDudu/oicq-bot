@@ -56,5 +56,9 @@ export const images: ImageElemObj = {
    catThreaten: {
       type: 'image',
       file: 'd6c83b7973ed9001aba6e67dd375d632186709-1080-1439.jpg'
+   },
+   hungry: {
+      type: 'image',
+      file: 'de5d3e21d71de2a63b526123c12b8e6316970-209-187.png',
    }
 }

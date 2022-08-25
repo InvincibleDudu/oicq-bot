@@ -4,6 +4,7 @@
 import { AtElem, GroupMessage, ImageElem, MessageElem, PrivateMessage, Sendable } from 'oicq'
 import { images } from "./resource"
 import { countDays, getReadableTime } from "./util"
+import { RecurrenceRule } from 'node-schedule'
 
 const { createClient } = require('oicq')
 const schedule = require('node-schedule')
@@ -52,7 +53,14 @@ client.on('system.online', () => {
    })
    schedule.scheduleJob({ minute: 5, second: 5 }, function() {
       if (duckSent) return
-      if (Math.random() < 0.5) fpsquad.sendMsg(images.dumb)
+      if (Math.random() < 0.333) fpsquad.sendMsg(images.dumb)
+   })
+   const rule: RecurrenceRule = new schedule.RecurrenceRule()
+   rule.hour = [11, 17, 23]
+   rule.minute = Math.random() * 60
+   schedule.scheduleJob(rule, function() {
+      if (duckSent) return
+      fpsquad.sendMsg(images.hungry)
    })
    console.log('Logged in!')
 })
