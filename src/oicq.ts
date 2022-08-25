@@ -90,7 +90,8 @@ client.on('message', (e: GroupMessage | PrivateMessage) => {
       client.pickGroup(e.group_id).sendMsg(msgToSend)
       // return
    } else if (e.atme) {
-      let m: ImageElem | string = msg.replace('@UnrealDudu', '').replace('@PS UnrealDudu', '').replace('吗？', '').replace('吗', '').replace('？', '').replace('?', '').replace('你', '我').replace('@InvincibleDudu', '').replace('@PS InvincibleDudu🍭', '')
+      // let m: ImageElem | string = msg.replace('@UnrealDudu', '').replace('@PS UnrealDudu', '').replace('吗？', '').replace('吗', '').replace('？', '').replace('?', '').replace('你', '我').replace('@InvincibleDudu', '').replace('@PS InvincibleDudu🍭', '')
+      let m: ImageElem | string = msg.replace(/@\S+/, '').replace('吗？', '').replace('吗', '').replace('？', '').replace('?', '').replace('你', '我')
       if (m.trim() === '') {
          // const info = sender.age + '岁的' + sender.area + sender.sex + '人' + sender.nickname
          client.pickGroup(e.group_id).sendMsg(images.catThreaten)
