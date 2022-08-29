@@ -2,8 +2,8 @@
  * Created by InvincibleDudu on 6/25/2022 at 15:41
  */
 import { AtElem, GroupMessage, ImageElem, MessageElem, PrivateMessage, Sendable } from 'oicq'
-import { images } from "./resource"
-import { countDays, getReadableTime } from "./util"
+import { bugCat, images } from './resource'
+import { countDays, getReadableTime, wait } from './util'
 import { RecurrenceRule } from 'node-schedule'
 
 const { createClient } = require('oicq')
@@ -51,16 +51,20 @@ client.on('system.online', () => {
    schedule.scheduleJob({ hour: 3, minute: 30, second: 5 }, function() {
       fpsquad.sendMsg('今天距fps小分队停更已过去' + countDays(new Date('02/28/2021')) + '天')
    })
-   schedule.scheduleJob({ minute: 5, second: 5 }, function() {
+   schedule.scheduleJob({ minute: 5, second: 5 }, async function() {
       if (duckSent) return
-      if (Math.random() < 0.333) fpsquad.sendMsg(images.dumb)
+      const probability = Math.random()
+      await wait(probability * 300)
+      if (probability < 0.2) await fpsquad.sendMsg(images.dumb)
+      else if (probability > 0.7) await fpsquad.sendMsg(bugCat.appear)
    })
    const rule: RecurrenceRule = new schedule.RecurrenceRule()
    rule.hour = [11, 17, 23]
-   rule.minute = (Math.random() * 59).toFixed(0)
-   schedule.scheduleJob(rule, function() {
+   rule.minute = 1
+   schedule.scheduleJob(rule, async function() {
       if (duckSent) return
-      fpsquad.sendMsg(images.hungry)
+      await wait(Math.random() * 2000)
+      await fpsquad.sendMsg(images.hungry)
    })
    console.log('Logged in!')
 })

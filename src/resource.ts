@@ -59,4 +59,11 @@ export const images = AssertRecordType<ImageElem>()({
       type: 'image',
       file: 'de5d3e21d71de2a63b526123c12b8e6316970-209-187.png',
    }
-}
+})
+
+export const bugCat = AssertRecordType<ImageElem>()({
+   appear: {
+      type: 'image',
+      file: 'ce7b1a859df9addec2b6036d6369eaec5494-276-186.jpg',
+   }
+})

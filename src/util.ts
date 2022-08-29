@@ -21,3 +21,6 @@ export function getReadableTime(time?: Date) {
       ("0" + m.getMilliseconds()).slice(-3))
 }
 
+export function wait(timeSec: number) {
+   return new Promise(resolve => setTimeout(resolve, timeSec * 1000))
+}
