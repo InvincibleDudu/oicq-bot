@@ -1,10 +1,8 @@
 import {ImageElem} from 'oicq'
 
-interface ImageElemObj {
-   [name: string]: ImageElem
-}
+export const AssertRecordType = <T>() => <D extends Record<string, T>>(d: D) => d
 
-export const images: ImageElemObj = {
+export const images = AssertRecordType<ImageElem>()({
    noAt: {
       type: 'image',
       file: '7387a0cf7ac175ad1b60fc1fe0200cdd131848-1600-1600.jpg',
