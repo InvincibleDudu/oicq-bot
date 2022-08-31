@@ -109,7 +109,12 @@ client.on('message', (e: GroupMessage | PrivateMessage) => {
       client.pickGroup(e.group_id).sendMsg(m)
    } else if (atQQList.includes(409174690) && !hasMsgOtherThanAt(e.message)) {
       // client.pickGroup(e.group_id).sendMsg(images.noAtInvdu)
-      client.pickGroup(e.group_id).sendMsg(images.catThreaten)
+      if (e.sender.user_id === 409174690) {
+         client.pickGroup(e.group_id).sendMsg(bugCat.love)
+         return
+      }
+      if (Math.random() > 0.5) client.pickGroup(e.group_id).sendMsg(images.catThreaten)
+      else client.pickGroup(e.group_id).sendMsg(images.fightMe)
       if (cd < 15) return
       const reAtMsg: AtElem = { type: 'at', qq: e.sender.user_id }
       client.pickGroup(e.group_id).sendMsg(reAtMsg)
