@@ -12,13 +12,13 @@ const schedule = require('node-schedule')
 const account = 1015850524
 const client = createClient(account)
 const group = client.pickGroup(208557053)
-const testGroup = client.pickGroup(748520034)
+// const testGroup = client.pickGroup(748520034)
 const fpsquad = client.pickGroup(700673635)
 
 const fs = require('fs')
 const util = require('util')
 
-const log_file = fs.createWriteStream(__dirname + '/data' + getReadableTime() + '.log', { flags : 'w' })
+const log_file = fs.createWriteStream(__dirname + '/data/' + getReadableTime() + '.log', { flags : 'w' })
 const log_stdout = process.stdout
 
 console.log = function(...args) {
@@ -71,7 +71,7 @@ client.on('system.online', () => {
 })
 let lastMessage: MessageElem[] = []
 
-client.on('message', async (e: GroupMessage | PrivateMessage) => {
+client.on('message', (e: GroupMessage | PrivateMessage) => {
    console.log(e)
    if (e instanceof PrivateMessage) return
    // console.log(e.sender.card + ' said: ' + e.raw_message + 'after ' + time + 's')
@@ -110,8 +110,10 @@ client.on('message', async (e: GroupMessage | PrivateMessage) => {
          cd = 0
          return
       }
-      m = await chatBot(m) || (m + '！')
-      client.pickGroup(e.group_id).sendMsg(m)
+      chatBot(m).then((res) => {
+         m = res || m + '！'
+         client.pickGroup(e.group_id).sendMsg(m)
+      })
    } else if (atQQList.includes(409174690) && !hasMsgOtherThanAt(e.message)) {
       // client.pickGroup(e.group_id).sendMsg(images.noAtInvdu)
       if (Math.random() > 0.5) client.pickGroup(e.group_id).sendMsg(images.catThreaten)

@@ -1,10 +1,8 @@
+import key from '../key'
 const tencentCloud = require('tencentcloud-sdk-nodejs')
 const NlpClient = tencentCloud.nlp.v20190408.Client
 const clientConfig = {
-   credential: {
-      secretId: '',
-      secretKey: ''
-   },
+   credential: key,
    region: 'ap-guangzhou',
    profile: {
       httpProfile: {
@@ -20,6 +18,7 @@ export async function chatBot(msg: string) {
    const params = { Query: msg }
    try {
       const res = await client.ChatBot(params)
+      console.log(res.Reply, res.Confidence)
       return res.Reply || ''
    } catch (e) {
       if (e instanceof Error) return e.message || ''
