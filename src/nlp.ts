@@ -14,12 +14,12 @@ const clientConfig = {
 // 实例化要请求产品的client对象,clientProfile是可选的
 const client = new NlpClient(clientConfig)
 
-export async function chatBot(msg: string) {
+export async function chatBot(msg: string, threshold = 0) {
    const params = { Query: msg }
    try {
       const res = await client.ChatBot(params)
       console.log(res.Reply, res.Confidence)
-      return res.Reply || ''
+      return (res.Confidence >= threshold) ? (res.Reply || '') : ''
    } catch (e) {
       if (e instanceof Error) return e.message || ''
       console.error(e)

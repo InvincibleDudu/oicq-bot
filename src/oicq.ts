@@ -74,8 +74,6 @@ let lastMessage: MessageElem[] = []
 client.on('message', (e: GroupMessage | PrivateMessage) => {
    console.log(e)
    if (e instanceof PrivateMessage) return
-   // console.log(e.sender.card + ' said: ' + e.raw_message + 'after ' + time + 's')
-   time = 0
    duckSent = false
    const msg = e.raw_message
    const atQQList: number[] = e.message.filter((item: any) => item.type === 'at').map((item: any) => item.qq)
@@ -149,11 +147,17 @@ client.on('message', (e: GroupMessage | PrivateMessage) => {
          pendingRps = false
          rpsSender = 0
       }, 1500)
-   // } else if (Math.random() < 0.05) {
-   //    e.reply // todo
+   } else if (Math.random() < 0.15 && time > 200 && !e.raw_message.includes('[')) {
+      chatBot(e.raw_message, 0.6).then((res) => {
+         client.pickGroup(e.group_id).sendMsg(res)
+      })
    } else {
       lastMessage = e.message
    }
+   console.log(time + 's')
+   // console.log(e.sender.card + ' said: ' + e.raw_message + 'after ' + time + 's')
+   time = 0
+
 //    e.reply("hello world", true) //true表示引用对方的消息
 })
 
