@@ -17,7 +17,7 @@ const fpsquad = client.pickGroup(700673635)
 const fs = require('fs')
 const util = require('util')
 
-const log_file = fs.createWriteStream(__dirname + '/' + getReadableTime() + '.log', { flags : 'w' })
+const log_file = fs.createWriteStream(__dirname + '/data' + getReadableTime() + '.log', { flags : 'w' })
 const log_stdout = process.stdout
 
 console.log = function(...args) {
