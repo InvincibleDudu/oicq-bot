@@ -5,6 +5,7 @@ import { AtElem, GroupMessage, ImageElem, MessageElem, PrivateMessage, Sendable 
 import { bugCat, images } from './resource'
 import { countDays, getReadableTime, wait } from './util'
 import { RecurrenceRule } from 'node-schedule'
+import { chatBot } from './nlp'
 
 const { createClient } = require('oicq')
 const schedule = require('node-schedule')
@@ -70,7 +71,7 @@ client.on('system.online', () => {
 })
 let lastMessage: MessageElem[] = []
 
-client.on('message', (e: GroupMessage | PrivateMessage) => {
+client.on('message', async (e: GroupMessage | PrivateMessage) => {
    console.log(e)
    if (e instanceof PrivateMessage) return
    // console.log(e.sender.card + ' said: ' + e.raw_message + 'after ' + time + 's')
@@ -97,7 +98,6 @@ client.on('message', (e: GroupMessage | PrivateMessage) => {
       // let m: ImageElem | string = msg.replace('@UnrealDudu', '').replace('@PS UnrealDudu', '').replace('吗？', '').replace('吗', '').replace('？', '').replace('?', '').replace('你', '我').replace('@InvincibleDudu', '').replace('@PS InvincibleDudu🍭', '')
       let m: ImageElem | string = msg.replace(/@\S+/, '').replace('吗？', '').replace('吗', '').replace('？', '').replace('?', '').replace('你', '我')
       if (m.trim() === '') {
-         // const info = sender.age + '岁的' + sender.area + sender.sex + '人' + sender.nickname
          if (e.sender.user_id === 409174690) {
             client.pickGroup(e.group_id).sendMsg(bugCat.love)
             return
@@ -110,7 +110,7 @@ client.on('message', (e: GroupMessage | PrivateMessage) => {
          cd = 0
          return
       }
-      m += '！'
+      m = await chatBot(m) || (m + '！')
       client.pickGroup(e.group_id).sendMsg(m)
    } else if (atQQList.includes(409174690) && !hasMsgOtherThanAt(e.message)) {
       // client.pickGroup(e.group_id).sendMsg(images.noAtInvdu)
