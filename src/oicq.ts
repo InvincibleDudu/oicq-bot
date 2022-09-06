@@ -114,7 +114,7 @@ client.on('message', (e: GroupMessage | PrivateMessage) => {
       chatBot(m).then((res) => {
          m = res || m + '！'
          client.pickGroup(e.group_id).sendMsg(m)
-      })
+      }).catch((e) => console.log('chatBot error 1', e))
    } else if (atQQList.includes(409174690) && !hasMsgOtherThanAt(e.message)) {
       // client.pickGroup(e.group_id).sendMsg(images.noAtInvdu)
       if (Math.random() > 0.5) client.pickGroup(e.group_id).sendMsg(images.catThreaten)
@@ -152,8 +152,8 @@ client.on('message', (e: GroupMessage | PrivateMessage) => {
       }, 1500)
    } else if (Math.random() < 0.15 && time > 200 && !e.raw_message.includes('[')) {
       chatBot(e.raw_message, 0.6).then((res) => {
-         client.pickGroup(e.group_id).sendMsg(res)
-      })
+         if (res !== '') client.pickGroup(e.group_id).sendMsg(res)
+      }).catch((e) => console.log('chatBot error 2', e))
    } else {
       lastMessage = e.message
    }
