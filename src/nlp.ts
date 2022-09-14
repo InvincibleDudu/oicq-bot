@@ -14,7 +14,7 @@ const clientConfig = {
 // 实例化要请求产品的client对象,clientProfile是可选的
 const client = new NlpClient(clientConfig)
 
-export async function chatBot(msg: string, threshold = 0) {
+export async function chatBot (msg: string, threshold = 0) {
    const params = { Query: msg }
    try {
       const res = await client.ChatBot(params)

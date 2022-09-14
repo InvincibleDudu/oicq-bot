@@ -18,10 +18,10 @@ const fpsquad = client.pickGroup(700673635)
 const fs = require('fs')
 const util = require('util')
 
-const log_file = fs.createWriteStream(__dirname + '/data/' + getReadableTime() + '.log', { flags : 'w' })
+const log_file = fs.createWriteStream(__dirname + '/data/' + getReadableTime() + '.log', { flags: 'w' })
 const log_stdout = process.stdout
 
-console.log = function(...args) {
+console.log = function (...args) {
    const output = args.join(' ')
    log_file.write(util.format(output) + '\r\n')
    log_stdout.write(util.format(output) + '\r\n')
@@ -49,10 +49,10 @@ client.on('system.online', () => {
          time = 0
       }
    }, 1000)
-   schedule.scheduleJob({ hour: 3, minute: 30, second: 5 }, function() {
+   schedule.scheduleJob({ hour: 3, minute: 30, second: 5 }, function () {
       fpsquad.sendMsg('今天距fps小分队停更已过去' + countDays(new Date('02/28/2021')) + '天')
    })
-   schedule.scheduleJob({ minute: 5, second: 5 }, async function() {
+   schedule.scheduleJob({ minute: 5, second: 5 }, async function () {
       if (duckSent) return
       const probability = Math.random()
       await wait(probability * 300)
@@ -62,7 +62,7 @@ client.on('system.online', () => {
    const rule: RecurrenceRule = new schedule.RecurrenceRule()
    rule.hour = [11, 17, 23]
    rule.minute = 1
-   schedule.scheduleJob(rule, async function() {
+   schedule.scheduleJob(rule, async function () {
       if (duckSent) return
       await wait(Math.random() * 2000)
       await fpsquad.sendMsg(images.hungry)
@@ -165,15 +165,15 @@ client.on('message', (e: GroupMessage | PrivateMessage) => {
 })
 
 client.on('system.login.qrcode', function () {
-   //扫码后按回车登录
+   // 扫码后按回车登录
    process.stdin.once('data', () => {
-      // @ts-ignore
+      // @ts-expect-error
       this.login()
    })
 }).login()
 // group.sendMsg('hello world')
 
-function hasMsgOtherThanAt(msg: MessageElem[]) {
+function hasMsgOtherThanAt (msg: MessageElem[]) {
    for (const item of msg) {
       if (item.type !== 'at') {
          if (item.type === 'text' && !item.text.trim()) continue
@@ -183,16 +183,16 @@ function hasMsgOtherThanAt(msg: MessageElem[]) {
    return false
 }
 
-function compareImage(img1: MessageElem, img2: MessageElem) {
+function compareImage (img1: MessageElem, img2: MessageElem) {
    if (img1.type !== 'image' || img2.type !== 'image') return false
    return img1.file === img2.file
 }
 
-function handlePrivateMessage(msg: PrivateMessage) {
+function handlePrivateMessage (msg: PrivateMessage) {
    if (msg.sender.user_id !== 409174690 && !msg.raw_message.includes('@bot -')) return
    // @bot -g 748520034 -m foo bar
    let msgToSend = ''
-   let target: Group | User | undefined = undefined
+   let target: Group | User | undefined
    const commands = msg.raw_message.replace('@bot -', '').split('-')
    for (const command of commands) {
       const content = command.slice(2)

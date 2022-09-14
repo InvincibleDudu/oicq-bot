@@ -8,5 +8,9 @@
 - [x] today is the xth day since fpsquad stopped posting
 - [ ] do stuff based on command received from qq
 - [ ] do not repeat the same message over
-- [ ] NLP
+- [x] NLP
+- [ ] sending me msg thru qq as a way of logging 
+- [x] eslint
+- [ ] logging improvements (with formatting md)
+- [ ] db?
 
