@@ -150,7 +150,7 @@ client.on('message', (e: GroupMessage | PrivateMessage) => {
          pendingRps = false
          rpsSender = 0
       }, 1500)
-   } else if (Math.random() < 0.15 && time > 200 && !e.raw_message.includes('[')) {
+   } else if (Math.random() < 0.4 && time > 200 && e.sender.user_id !== 409174690 && !e.raw_message.includes('[') && e.raw_message.length >= 2) {
       chatBot(e.raw_message, 0.6).then((res) => {
          if (res !== '') client.pickGroup(e.group_id).sendMsg(res)
       }).catch((e) => console.log('chatBot error 2', e))
