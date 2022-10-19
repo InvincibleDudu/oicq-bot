@@ -6,6 +6,9 @@ import { bugCat, images } from './resource'
 import { countDays, getReadableTime, wait } from './util'
 import { RecurrenceRule } from 'node-schedule'
 import { chatBot } from './nlp'
+import api from './api'
+
+api()
 
 const { createClient } = require('oicq')
 const schedule = require('node-schedule')
