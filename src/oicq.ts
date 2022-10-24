@@ -57,10 +57,10 @@ client.on('system.online', () => {
       const probability = Math.random()
       await wait(probability * 300)
       if (probability < 0.2) await fpsquad.sendMsg(images.dumb)
-      else if (probability > 0.7) await fpsquad.sendMsg(bugCat.appear)
+      else if (probability > 0.75) await fpsquad.sendMsg(bugCat.appear)
    })
    const rule: RecurrenceRule = new schedule.RecurrenceRule()
-   rule.hour = [11, 17, 23]
+   rule.hour = [23]
    rule.minute = 1
    schedule.scheduleJob(rule, async function() {
       if (duckSent) return
@@ -105,8 +105,9 @@ client.on('message', (e: GroupMessage | PrivateMessage) => {
          }
          if (Math.random() > 0.5) client.pickGroup(e.group_id).sendMsg(images.catThreaten)
          else client.pickGroup(e.group_id).sendMsg(images.fightMe)
-         if (cd < 15) return
+         if (cd < 1500) return
          const reAtMsg: AtElem = { type: 'at', qq: e.sender.user_id }
+         client.pickGroup(e.group_id).sendMsg(reAtMsg)
          client.pickGroup(e.group_id).sendMsg(reAtMsg)
          cd = 0
          return
@@ -119,8 +120,9 @@ client.on('message', (e: GroupMessage | PrivateMessage) => {
       // client.pickGroup(e.group_id).sendMsg(images.noAtInvdu)
       if (Math.random() > 0.5) client.pickGroup(e.group_id).sendMsg(images.catThreaten)
       else client.pickGroup(e.group_id).sendMsg(images.fightMe)
-      if (cd < 15) return
+      if (cd < 1500) return
       const reAtMsg: AtElem = { type: 'at', qq: e.sender.user_id }
+      client.pickGroup(e.group_id).sendMsg(reAtMsg)
       client.pickGroup(e.group_id).sendMsg(reAtMsg)
       // client.pickGroup(e.group_id).sendMsg(reAtMsg)
       cd = 0
@@ -150,7 +152,7 @@ client.on('message', (e: GroupMessage | PrivateMessage) => {
          pendingRps = false
          rpsSender = 0
       }, 1500)
-   } else if (Math.random() < 0.4 && time > 200 && e.sender.user_id !== 409174690 && !e.raw_message.includes('[') && e.raw_message.length >= 2) {
+   } else if (Math.random() < 0.4 && time > 200 && e.sender.user_id !== 409174690 && !e.raw_message.includes('[') && e.raw_message.length > 2 && e.raw_message.length < 20) {
       chatBot(e.raw_message, 0.6).then((res) => {
          if (res !== '') client.pickGroup(e.group_id).sendMsg(res)
       }).catch((e) => console.log('chatBot error 2', e))
