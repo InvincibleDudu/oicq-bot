@@ -152,6 +152,9 @@ client.on('message', (e: GroupMessage | PrivateMessage) => {
          pendingRps = false
          rpsSender = 0
       }, 1500)
+   } else if (e.raw_message.toLowerCase().includes('oh') && e.raw_message.length < 5) {
+      if (cd < 50 || Math.random() < 0.5) return
+      client.pickGroup(e.group_id).sendMsg('oh nongzewen?')
    } else if (Math.random() < 0.4 && time > 200 && e.sender.user_id !== 409174690 && !e.raw_message.includes('[') && e.raw_message.length > 2 && e.raw_message.length < 20) {
       chatBot(e.raw_message, 0.6).then((res) => {
          if (res !== '') client.pickGroup(e.group_id).sendMsg(res)
