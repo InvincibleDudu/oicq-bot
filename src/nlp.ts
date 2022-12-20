@@ -18,7 +18,7 @@ export async function chatBot(msg: string, threshold = 0) {
    const params = { Query: msg }
    try {
       const res = await client.ChatBot(params)
-      console.log(res.Reply, res.Confidence)
+      console.log('CB: ', msg, res.Reply, res.Confidence)
       return (res.Confidence >= threshold) ? (res.Reply ?? '') : ''
    } catch (e) {
       console.error('NLP Error: ', e)

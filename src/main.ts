@@ -1,11 +1,12 @@
 /**
  * Created by InvincibleDudu on 6/25/2022 at 15:41
  */
-import { AtElem, Group, GroupMessage, ImageElem, MessageElem, PrivateMessage, Sendable, User } from 'oicq'
+import { AtElem, GroupMessage, MessageElem, PrivateMessage, Sendable } from 'oicq'
 import { bugCat, images } from './resource'
 import { countDays, getReadableTime, wait } from './util'
 import { RecurrenceRule } from 'node-schedule'
 import { chatBot } from './nlp'
+import { handleAtMe, handlePrivateMessage } from './oicq'
 
 const { createClient } = require('oicq')
 const schedule = require('node-schedule')
@@ -74,7 +75,7 @@ let lastMessage: MessageElem[] = []
 client.on('message', (e: GroupMessage | PrivateMessage) => {
    console.log(e)
    if (e instanceof PrivateMessage) {
-      handlePrivateMessage(e)
+      handlePrivateMessage(e, client)
       return
    }
    duckSent = false
@@ -96,26 +97,7 @@ client.on('message', (e: GroupMessage | PrivateMessage) => {
       client.pickGroup(e.group_id).sendMsg(msgToSend)
       // return
    } else if (e.atme) {
-      // let m: ImageElem | string = msg.replace('@UnrealDudu', '').replace('@PS UnrealDudu', '').replace('吗？', '').replace('吗', '').replace('？', '').replace('?', '').replace('你', '我').replace('@InvincibleDudu', '').replace('@PS InvincibleDudu🍭', '')
-      let m: ImageElem | string = msg.replace(/@\S+/, '').replace('吗？', '').replace('吗', '').replace('？', '').replace('?', '').replace('你', '我')
-      if (m.trim() === '') {
-         if (e.sender.user_id === 409174690) {
-            client.pickGroup(e.group_id).sendMsg(bugCat.love)
-            return
-         }
-         if (Math.random() > 0.5) client.pickGroup(e.group_id).sendMsg(images.catThreaten)
-         else client.pickGroup(e.group_id).sendMsg(images.fightMe)
-         if (cd < 1500) return
-         const reAtMsg: AtElem = { type: 'at', qq: e.sender.user_id }
-         client.pickGroup(e.group_id).sendMsg(reAtMsg)
-         client.pickGroup(e.group_id).sendMsg(reAtMsg)
-         cd = 0
-         return
-      }
-      chatBot(m).then((res) => {
-         m = res || m + '！'
-         client.pickGroup(e.group_id).sendMsg(m)
-      }).catch((e) => console.log('chatBot error 1', e))
+      handleAtMe(e, client)
    } else if (atQQList.includes(409174690) && !hasMsgOtherThanAt(e.message)) {
       // client.pickGroup(e.group_id).sendMsg(images.noAtInvdu)
       if (Math.random() > 0.5) client.pickGroup(e.group_id).sendMsg(images.catThreaten)
@@ -191,29 +173,4 @@ function hasMsgOtherThanAt(msg: MessageElem[]) {
 function compareImage(img1: MessageElem, img2: MessageElem) {
    if (img1.type !== 'image' || img2.type !== 'image') return false
    return img1.file === img2.file
-}
-
-function handlePrivateMessage(msg: PrivateMessage) {
-   if (msg.sender.user_id !== 409174690 && !msg.raw_message.includes('@bot -')) return
-   // @bot -g 748520034 -m foo bar
-   let msgToSend = ''
-   let target: Group | User | undefined = undefined
-   const commands = msg.raw_message.replace('@bot -', '').split('-')
-   for (const command of commands) {
-      const content = command.slice(2)
-      switch (command[0]) {
-         case 'm':
-            msgToSend = content
-            break
-         case 'g':
-            target = client.pickGroup(Number(content))
-            break
-         case 'p':
-            target = client.pickUser(Number(content))
-      }
-   }
-   client.pickUser(409174690).sendMsg('' + msgToSend + ' ' + JSON.stringify(target))
-   if (target && msgToSend) {
-      target.sendMsg(msgToSend)
-   }
 }
