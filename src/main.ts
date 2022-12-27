@@ -1,12 +1,12 @@
 /**
  * Created by InvincibleDudu on 6/25/2022 at 15:41
  */
-import { AtElem, GroupMessage, MessageElem, PrivateMessage, Sendable } from 'oicq'
+import { GroupMessage, MessageElem, PrivateMessage, Sendable } from 'oicq'
 import { bugCat, images } from './resource'
 import { countDays, getReadableTime, wait } from './util'
 import { RecurrenceRule } from 'node-schedule'
 import { chatBot } from './nlp'
-import { handleAtMe, handlePrivateMessage } from './oicq'
+import { handleAtInvdu, handleAtMe, handlePrivateMessage } from './oicq'
 
 const { createClient } = require('oicq')
 const schedule = require('node-schedule')
@@ -99,15 +99,7 @@ client.on('message', (e: GroupMessage | PrivateMessage) => {
    } else if (e.atme) {
       handleAtMe(e, client)
    } else if (atQQList.includes(409174690) && !hasMsgOtherThanAt(e.message)) {
-      // client.pickGroup(e.group_id).sendMsg(images.noAtInvdu)
-      if (Math.random() > 0.5) client.pickGroup(e.group_id).sendMsg(images.catThreaten)
-      else client.pickGroup(e.group_id).sendMsg(images.fightMe)
-      if (cd < 1500) return
-      const reAtMsg: AtElem = { type: 'at', qq: e.sender.user_id }
-      client.pickGroup(e.group_id).sendMsg(reAtMsg)
-      client.pickGroup(e.group_id).sendMsg(reAtMsg)
-      // client.pickGroup(e.group_id).sendMsg(reAtMsg)
-      cd = 0
+      handleAtInvdu(e, client)
    } else if (atQQList.includes(791876772) && !hasMsgOtherThanAt(e.message)) {
       client.pickGroup(e.group_id).sendMsg(images.noAtSheep)
    } else if (JSON.stringify(e.message) === JSON.stringify(lastMessage) || compareImage(e.message[0], lastMessage[0])) {

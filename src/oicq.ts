@@ -1,4 +1,4 @@
-import { Client, Group, GroupMessage, ImageElem, PrivateMessage, User } from 'oicq'
+import { Client, Group, GroupMessage, ImageElem, PrivateMessage, Sendable, User } from 'oicq'
 import { bugCat, images } from './resource'
 import { chatBot } from './nlp'
 
@@ -45,4 +45,12 @@ export function handleAtMe (e: GroupMessage, client: Client) {
       m = res || m + '！'
       client.pickGroup(e.group_id).sendMsg(m)
    }).catch((e) => console.log('chatBot error 1', e))
+}
+
+export function handleAtInvdu (e: GroupMessage, client: Client) {
+   const msg: Sendable = [{type: 'at', qq: e.sender.user_id}, images.noAtInvdu]
+   if (Math.random() < 0.05) {
+      for (let i = 0; i < 30; i++) msg.push({type: 'at', qq: e.sender.user_id})
+   }
+   client.pickGroup(e.group_id).sendMsg(msg)
 }
