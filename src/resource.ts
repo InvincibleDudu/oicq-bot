@@ -10,7 +10,7 @@ export const images = AssertRecordType<ImageElem>()({
    },
    noAtInvdu: {
       type: 'image',
-      file: 'a1f33e0aaea14321c7730e9646fe1ed88584-200-200.png',
+      file: '28a322abc66456c6bc6437479ca663437528-200-200.png',
       url: 'https://c2cpicdw.qpic.cn/offpic_new/409174690//409174690-1841711683-A1F33E0AAEA14321C7730E9646FE1ED8/0?term=2',
    },
    noAtSheep: {
