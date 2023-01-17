@@ -54,3 +54,20 @@ export function handleAtInvdu (e: GroupMessage, client: Client) {
    }
    client.pickGroup(e.group_id).sendMsg(msg)
 }
+
+export async function handleVoiceMessage (e: GroupMessage, client: Client) {
+   if (e.message[0].type !== 'record') return
+   const voiceMsg = e.message[0]
+   if (!voiceMsg.url) {
+      try {
+         const res = await client.getMsg(e.message_id)
+         if (res instanceof GroupMessage)
+         e = res
+         console.log('fetched new voice message')
+         console.log(e)
+      } catch (err) {
+         console.log('voice error ', err)
+      }
+   }
+   if (typeof voiceMsg.file === 'string') return
+}

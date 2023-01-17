@@ -6,7 +6,7 @@ import { bugCat, images } from './resource'
 import { countDays, getReadableTime, wait } from './util'
 import { RecurrenceRule } from 'node-schedule'
 import { chatBot } from './nlp'
-import { handleAtInvdu, handleAtMe, handlePrivateMessage } from './oicq'
+import { handleAtInvdu, handleAtMe, handlePrivateMessage, handleVoiceMessage } from './oicq'
 
 const { createClient } = require('oicq')
 const schedule = require('node-schedule')
@@ -76,6 +76,10 @@ client.on('message', (e: GroupMessage | PrivateMessage) => {
    console.log(e)
    if (e instanceof PrivateMessage) {
       handlePrivateMessage(e, client)
+      return
+   }
+   if (e.message[0].type === 'record') {
+      handleVoiceMessage(e, client)
       return
    }
    duckSent = false
