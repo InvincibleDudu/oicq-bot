@@ -1,7 +1,7 @@
 /**
  * Created by InvincibleDudu on 6/25/2022 at 15:41
  */
-import { GroupMessage, MessageElem, PrivateMessage, Sendable } from 'oicq'
+import { GroupMessage, GroupMuteEvent, MessageElem, PrivateMessage, Sendable } from 'oicq'
 import { bugCat, images } from './resource'
 import { countDays, getReadableTime, wait } from './util'
 import { RecurrenceRule } from 'node-schedule'
@@ -151,6 +151,12 @@ client.on('system.login.qrcode', function () {
    })
 }).login()
 // group.sendMsg('hello world')
+
+client.on('notice.group.ban', (e: GroupMuteEvent) => {
+   if (e.operator_id === 409174690 && e.group_id === 700673635 && e.duration) {
+      e.group.sendMsg('恭喜您抽中' + e.duration + '秒')
+   }
+})
 
 function hasMsgOtherThanAt(msg: MessageElem[]) {
    for (const item of msg) {
